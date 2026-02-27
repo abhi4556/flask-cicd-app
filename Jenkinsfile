@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent none
 
     environment {
         DOCKER_IMAGE = "abhimukh/flask-app"
@@ -10,6 +10,7 @@ pipeline {
     stages {
 
         stage('Build Docker Image') {
+            agent { label 'build-node' }
             steps {
                 script {
                     dockerImage = docker.build("${DOCKER_IMAGE}:${BUILD_NUMBER}")
@@ -18,6 +19,7 @@ pipeline {
         }
 
         stage('Push Image') {
+            agent { label 'build-node' }
             steps {
                 script {
                     docker.withRegistry('', 'dockerhub-creds') {
@@ -28,6 +30,7 @@ pipeline {
         }
 
         stage('Update Manifests') {
+            agent { label 'deploy-node' }
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PAT')]) {
@@ -48,6 +51,6 @@ pipeline {
                 }
             }
         }
-}
 
+    }
 }
