@@ -7,6 +7,7 @@
 #     apt-get clean
 
 # USER jenkins
+# dummy
 
 FROM jenkins/jenkins:lts
 
