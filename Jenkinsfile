@@ -9,7 +9,7 @@ pipeline {
 
     stages {
 
-        stage('Build Docker Image') {
+        stage('Build Docker Image now') {
             steps {
                 script {
                     dockerImage = docker.build("${DOCKER_IMAGE}:${BUILD_NUMBER}")
